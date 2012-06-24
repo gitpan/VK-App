@@ -1,0 +1,18 @@
+VK::App version 0.01
+===================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+If you are on a windows box you should use 'nmake' rather than 'make'.
+
+Copyright (C) 2012 by Misha Genaev
+email: mag@cpan.org
+web site: http://genaev.com
+
