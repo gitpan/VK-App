@@ -1,5 +1,8 @@
 Revision history for Perl module VK::App
 
+0.03  Tue Jun 26 23:59:59 2012
+    - META.yml and META.json added
+
 0.02  Tue Jun 26 23:11:47 2012
     - update POD and Makefile.PL
 
