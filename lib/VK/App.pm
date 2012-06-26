@@ -7,7 +7,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 sub new {
   my ($class, %args) = @_;
@@ -139,7 +139,7 @@ __END__
 
 =head1 NAME
 
-VK::App - Creation a client application for vk.com
+VK::App - Creation of a client application for vk.com
 
 =head1 SYNOPSIS
 
@@ -147,24 +147,34 @@ VK::App - Creation a client application for vk.com
     #1. Authorizing by login and password
     use VK::App;
     my $vk = VK::App->new(
-            login      => 'login',    # Your email or mobile phone to vk.com
-            password   => 'password', # Your password to vk.com
-            api_id     => 'api_id',   # The api_id of application
-            cookie_file => '/home/user/.vk.com.cookie', # Name of the file to restore cookies from and save cookies to (this parameter is optional in this case)
+            # Your email or mobile phone to vk.com    
+            login      => 'login',
+            # Your password to vk.com
+            password   => 'password',
+            # The api_id of application
+            api_id     => 'api_id',
+            # Name of the file to restore cookies from and save cookies to
+            #(this parameter is optional in this case)
+            cookie_file => '/home/user/.vk.com.cookie',
     );
 
     #2. Authorizing by cookie file
     use VK::App;
     my $vk = VK::App->new(
-            cookie_file => '/home/user/.vk.com.cookie', # Name of the file to restore cookies from and save cookies to
+            # Name of the file to restore cookies from and save cookies to
+            cookie_file => '/home/user/.vk.com.cookie',
     );
 
     #3. Set additional options
     use VK::App;
     my $vk = VK::App->new(
-            cookie_file => '/home/user/.vk.com.cookie', # Name of the file to restore cookies from and save cookies to
-            scope => 'friends,photos,audio,video,wall,groups,messages,offline', # Set application access rights
-            format => 'Perl', # Data format that will receive as a result of requests 'JSON', 'XML' or 'Perl'. Perl object by default.
+            # Name of the file to restore cookies from and save cookies to
+            cookie_file => '/home/user/.vk.com.cookie',
+            # Set application access rights
+            scope => 'friends,photos,audio,video,wall,groups,messages,offline',
+            # Data format that will receive as a result of requests 'JSON', 'XML' or 'Perl'.
+            # Perl object by default.
+            format => 'Perl',
     );
             
     ### Requests examples ###
@@ -180,9 +190,9 @@ VK::App - Creation a client application for vk.com
 
 =head1 DESCRIPTION
 
-B<VK::App> - Module for creation client applications based on OAuth 2.0, receiving access rights and sending requests to API vk.com. First, you need to get B<api_id> application that will work with the API of vk.com. You can register your application at L<http://vk.com/apps.php?act=add> or use B<api_id> of the existing application.
+B<VK::App> - Module for creation of client applications based on OAuth 2.0, receiving access rights and sending requests to API vk.com. First, you need to get B<api_id> application that will work with the API of vk.com. You can register your application at L<http://vk.com/apps.php?act=add> or use B<api_id> of the existing application.
 
-This package also includes B<scripts/vmd.pl> script, that shows how you can use the module.
+This package also includes B<scripts/vmd.pl> script, that shows how to use the module.
 
 =head1 METHODS
 
@@ -238,7 +248,7 @@ API method mescription available at L<http://vk.com/developers.php?oid=-17680044
 
 =head2 C<ua>
 
-Returns LWP::UserAgent object. This can be useful for downloading musics, videos or photos from vk.com. See B<scripts/vmd.pl> script that is included the package.
+Returns LWP::UserAgent object. This can be useful for downloading music, videos or photos from vk.com. See B<scripts/vmd.pl> script that is included in the package.
 
 =head2 C<uid>
 
@@ -246,13 +256,15 @@ Returns UID of the current user.
 
 =head2 C<access_token>
 
-Returns access_token. access_token – access key received as a result of successful application authorization.
+Returns access_token. access_token - access key received as a result of successful application authorization.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc VK::App
+
+If you have any questions or suggestions please contact me by email.
 
 =head1 AUTHOR
 

@@ -10,5 +10,7 @@ WriteMakefile(
     ABSTRACT     => 'Creation client applications for vk.com',
     PREREQ_PM    => {
                      'Test::Simple' => 0.44,
+                     'LWP' => 5.834,
+                     'JSON' => 2.53,
                     },
 );
