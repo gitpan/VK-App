@@ -20,5 +20,6 @@ no_index:
 requires:
   JSON: 2.53
   LWP: 5.834
+  LWP::Protocol::https: 0
   Test::Simple: 0.44
 version: 0.03

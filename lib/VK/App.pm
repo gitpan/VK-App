@@ -7,7 +7,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 sub new {
   my ($class, %args) = @_;
@@ -148,11 +148,11 @@ VK::App - Creation of a client application for vk.com
     use VK::App;
     my $vk = VK::App->new(
             # Your email or mobile phone to vk.com    
-            login      => 'login',
+            login => 'login',
             # Your password to vk.com
-            password   => 'password',
+            password => 'password',
             # The api_id of application
-            api_id     => 'api_id',
+            api_id => 'api_id',
             # Name of the file to restore cookies from and save cookies to
             #(this parameter is optional in this case)
             cookie_file => '/home/user/.vk.com.cookie',
@@ -163,6 +163,8 @@ VK::App - Creation of a client application for vk.com
     my $vk = VK::App->new(
             # Name of the file to restore cookies from and save cookies to
             cookie_file => '/home/user/.vk.com.cookie',
+            # The api_id of application
+            api_id => 'api_id',
     );
 
     #3. Set additional options
@@ -170,6 +172,8 @@ VK::App - Creation of a client application for vk.com
     my $vk = VK::App->new(
             # Name of the file to restore cookies from and save cookies to
             cookie_file => '/home/user/.vk.com.cookie',
+            # The api_id of application
+            api_id => 'api_id',
             # Set application access rights
             scope => 'friends,photos,audio,video,wall,groups,messages,offline',
             # Data format that will receive as a result of requests 'JSON', 'XML' or 'Perl'.
@@ -243,7 +247,7 @@ Data format that will receive as a result of requests 'JSON', 'XML' or 'Perl'. P
 =head2 C<request>
 
 Send requests and return response.
-my $response = $vk->request($METHOD_NAME,$PARAMETERS);
+    my $response = $vk->request($METHOD_NAME,$PARAMETERS);
 API method mescription available at L<http://vk.com/developers.php?oid=-17680044&p=API_Method_Description>
 
 =head2 C<ua>

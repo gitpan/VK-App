@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
-# vmd.pl - script for to download user tracks from vk.com
-# (c) Genaev Misha 2012 | http://genaev/
+# vmd.pl - download user's tracks from vk.com
+# (c) Genaev Misha 2012 | http://genaev.com/
 
 use strict;
 use warnings;
@@ -36,8 +36,6 @@ my $n = scalar @{$tracks->{response}}; # number of tracks
 foreach my $track (@{$tracks->{response}}) {
 	my $url = $track->{url}; # track url
 	my $mp3_filename = $track->{aid}.'.mp3';
-	my $expected_length;
-	my $bytes_received = 0;
 	print "$i/$n Download $url";
 	my $req = HTTP::Request->new(GET => $url);
 	my $res = $ua->request($req, $mp3_filename);

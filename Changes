@@ -1,5 +1,8 @@
 Revision history for Perl module VK::App
 
+0.04  Wed Jun 27 09:20:37 2012
+    - fixes in documentation, dependencies and in vmd.pl script
+
 0.03  Tue Jun 26 23:59:59 2012
     - META.yml and META.json added
 
@@ -8,5 +11,3 @@ Revision history for Perl module VK::App
 
 0.01 Sun Jun 24 15:34:14 2012
     - original version; created by ExtUtils::ModuleMaker 0.51
-
-

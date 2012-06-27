@@ -11,6 +11,7 @@ WriteMakefile(
     PREREQ_PM    => {
                      'Test::Simple' => 0.44,
                      'LWP' => 5.834,
+                     'LWP::Protocol::https' => '0',
                      'JSON' => 2.53,
                     },
 );
