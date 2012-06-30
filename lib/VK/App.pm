@@ -7,7 +7,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 sub new {
   my ($class, %args) = @_;
@@ -228,8 +228,6 @@ Name of the file to restore cookies from and save cookies to. B<Notice that inst
 
 =back
 
-=over 4
-
 =item * Other Important Arguments
 
 =over 4
@@ -244,11 +242,15 @@ Data format that will receive as a result of requests 'JSON', 'XML' or 'Perl'. P
 
 =back
 
+=back
+
 =head2 C<request>
 
 Send requests and return response.
+
     my $response = $vk->request($METHOD_NAME,$PARAMETERS);
-API method mescription available at L<http://vk.com/developers.php?oid=-17680044&p=API_Method_Description>
+
+API method description available at L<http://vk.com/developers.php?oid=-17680044&p=API_Method_Description>
 
 =head2 C<ua>
 

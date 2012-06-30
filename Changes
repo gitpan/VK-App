@@ -1,5 +1,8 @@
 Revision history for Perl module VK::App
 
+0.05  Sat Jun 30 09:50:48 2012
+    - POD fixed
+
 0.04  Wed Jun 27 09:20:37 2012
     - fixes in documentation, dependencies and in vmd.pl script
 
