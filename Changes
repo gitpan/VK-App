@@ -1,5 +1,11 @@
 Revision history for Perl module VK::App
 
+0.06  Sun Jul 1 09:41:50 2012
+    - Very important update!
+      Changes in authorization by login and password depending on changes in vk.com.
+      Old versions of the module does't working now.
+    - Update Makefile.PL
+
 0.05  Sat Jun 30 09:50:48 2012
     - POD fixed
 

@@ -5,7 +5,7 @@
 
 use strict;
 use warnings;
-use VK::App;
+use VK::App 0.06;
 use MP3::Tag;
 use File::Copy;
 

@@ -7,7 +7,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.05;
+our $VERSION = 0.06;
 
 sub new {
   my ($class, %args) = @_;
@@ -27,6 +27,9 @@ sub new {
  
   die 'ERROR: login failed' unless($self->_login());
  	die 'ERROR: authorize app failed' unless($self->_authorize_app());
+
+ 	$self->{ua}->cookie_jar()->save($self->{cookie_file}) if (exists $self->{cookie_file});
+
   return $self;
 }
 
@@ -36,12 +39,16 @@ sub _login {
       email => $self->{login},
       pass => $self->{password},
     }); 
+  return 0 if $res->status_line ne "302 Found";
+  return 0 if $res->header('location') !~ /act=slogin&fast=1/; # bad login or password
+  $res = $self->{ua}->get($res->header('location'));
   return 0 unless $res->is_success;
   return $res->message;
 }
 
 sub _authorize_app {
 	my $self = shift;
+	push @{ $self->{ua}->requests_redirectable }, 'POST';
 	my %authorize;
 	$authorize{request} = 'http://oauth.vk.com/authorize?'.
 	'client_id='.$self->{api_id}.
@@ -66,7 +73,7 @@ sub _authorize_app {
 
 sub _create_ua {
   my $ua = LWP::UserAgent->new(agent => "VK::App $VERSION");
-  push @{ $ua->requests_redirectable }, 'POST';
+  #push @{ $ua->requests_redirectable }, 'POST';
   #$ua->ssl_opts(verify_hostname => 0);
   ($_[0])?($ua->cookie_jar( {file=>$_[0],autosave => 1} )):($ua->cookie_jar( { } ));
   return $ua;
