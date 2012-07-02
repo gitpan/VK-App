@@ -2,12 +2,11 @@ package VK::App;
 
 use strict;
 use warnings;
-use utf8;
 use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 sub new {
   my ($class, %args) = @_;
@@ -134,7 +133,6 @@ sub request {
   my $content = $res->content;
   return $content if ($self->{format} eq "XML");
   return $content if ($self->{format} eq "JSON");
-  utf8::encode($content);
   return decode_json($content);
 }
 
