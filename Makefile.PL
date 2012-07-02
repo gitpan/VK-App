@@ -20,6 +20,7 @@ WriteMakefile(
           resources => {
             homepage    => 'http://genaev.com/',
             license     => 'http://dev.perl.org/licenses/',
+                       },
                     },
 );
 

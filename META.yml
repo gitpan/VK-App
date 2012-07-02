@@ -22,4 +22,4 @@ requires:
   LWP: 5.834
   LWP::Protocol::https: 0
   Test::Simple: 0.44
-version: 0.06
+version: 0.07
