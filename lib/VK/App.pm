@@ -6,7 +6,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.08;
+our $VERSION = 0.10;
 
 sub new {
   my ($class, %args) = @_;
