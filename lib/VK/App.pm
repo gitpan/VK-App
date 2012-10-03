@@ -13,21 +13,21 @@ sub new {
   die "USAGE:\nVK::App->new(api_id => ... login => ... password => ...)\n",
   "VK::App->new(api_id => ... cookie_file => ...)\n" unless _valid_new_args(\%args);
  
-	my $self;
-	$self->{api_id}      = $args{api_id}       if exists $args{api_id};
-	$self->{login}       = $args{login}        if exists $args{login};
-	$self->{password}    = $args{password}     if exists $args{password};
-	$self->{cookie_file} = $args{cookie_file}  if exists $args{cookie_file};
-	(exists $args{scope})?($self->{scope} = $args{scope}):($self->{scope} = 'friends,photos,audio,video,wall,groups,messages,offline');
-	(exists $args{format})?($self->{format} = $args{format}):($self->{format} = 'Perl');
-	(exists $args{cookie_file})?($self->{ua} = _create_ua($args{cookie_file})):($self->{ua} = _create_ua());
+  my $self;
+  $self->{api_id}      = $args{api_id}       if exists $args{api_id};
+  $self->{login}       = $args{login}        if exists $args{login};
+  $self->{password}    = $args{password}     if exists $args{password};
+  $self->{cookie_file} = $args{cookie_file}  if exists $args{cookie_file};
+  (exists $args{scope})?($self->{scope} = $args{scope}):($self->{scope} = 'friends,photos,audio,video,wall,groups,messages,offline');
+  (exists $args{format})?($self->{format} = $args{format}):($self->{format} = 'Perl');
+  (exists $args{cookie_file})?($self->{ua} = _create_ua($args{cookie_file})):($self->{ua} = _create_ua());
   
   bless $self, $class;
  
   die 'ERROR: login failed' unless($self->_login());
- 	die 'ERROR: authorize app failed' unless($self->_authorize_app());
+  die 'ERROR: authorize app failed' unless($self->_authorize_app());
 
- 	$self->{ua}->cookie_jar()->save($self->{cookie_file}) if (exists $self->{cookie_file});
+  $self->{ua}->cookie_jar()->save($self->{cookie_file}) if (exists $self->{cookie_file});
 
   return $self;
 }
@@ -37,37 +37,38 @@ sub _login {
   my $res = $self->{ua}->post('https://login.vk.com/?act=login', {
       email => $self->{login},
       pass => $self->{password},
-    }); 
+    });
+  print $res->header('location'),"\n",$res->content;
   return 0 if $res->status_line ne "302 Found";
-  return 0 if $res->header('location') !~ /act=slogin&fast=1/; # bad login or password
+  return 0 if $res->header('location') !~ /act=slogin&role=fast/; # bad login or password
   $res = $self->{ua}->get($res->header('location'));
   return 0 unless $res->is_success;
   return $res->message;
 }
 
 sub _authorize_app {
-	my $self = shift;
-	push @{ $self->{ua}->requests_redirectable }, 'POST';
-	my %authorize;
-	$authorize{request} = 'http://oauth.vk.com/authorize?'.
-	'client_id='.$self->{api_id}.
-	'&scope='.$self->{scope}.
-	'&redirect_uri=http://api.vk.com/blank.html'.
-	'&display=wap'.
-	'&response_type=token';
+  my $self = shift;
+  push @{ $self->{ua}->requests_redirectable }, 'POST';
+  my %authorize;
+  $authorize{request} = 'http://oauth.vk.com/authorize?'.
+  'client_id='.$self->{api_id}.
+  '&scope='.$self->{scope}.
+  '&redirect_uri=http://api.vk.com/blank.html'.
+  '&display=wap'.
+  '&response_type=token';
   my $res = $self->{ua}->post($authorize{request}); 
   return 0 unless $res->is_success;
   my $contect = $res->decoded_content;
   $authorize{approve} = $1 if $contect =~ /action=\"(.+)\"/;
   if (exists $authorize{approve}) {
-  	$res = $self->{ua}->post($authorize{approve});
-  	return 0 unless $res->is_success;
+    $res = $self->{ua}->post($authorize{approve});
+    return 0 unless $res->is_success;
   }
-	if ($res->request()->uri() =~ /access_token=(.+)&expires_in=0&user_id=(\d+)/) {
-		$self->{access_token} = $1;
-		$self->{uid} = $2;
-	}
-	return $res->message;
+  if ($res->request()->uri() =~ /access_token=(.+)&expires_in=0&user_id=(\d+)/) {
+    $self->{access_token} = $1;
+    $self->{uid} = $2;
+  }
+  return $res->message;
 }
 
 sub _create_ua {
@@ -79,9 +80,9 @@ sub _create_ua {
 }
 
 sub _clean_cookie {
-	my $self = shift;
-	$self->{ua}->cookie_jar()->clear();
-	return 1;
+  my $self = shift;
+  $self->{ua}->cookie_jar()->clear();
+  return 1;
 }
 
 sub _valid_new_args {
@@ -89,45 +90,45 @@ sub _valid_new_args {
   return 0 unless ref($args) eq 'HASH';
   if (!$args->{api_id} || 
      ((!$args->{login} || !$args->{password}) && !$args->{cookie_file}) ) {
-  	return 0;
+       return 0;
   }
   return 1;
 }
 
 sub _params {
-    my $params = shift;
-    return unless ( ref $params eq "HASH" );
-    my @pice;
-    while ( my ($k,$v) = each %{$params} ) { push @pice, $k.'='.$v; }
-    return join( '&', @pice );
+  my $params = shift;
+  return unless ( ref $params eq "HASH" );
+  my @pice;
+  while ( my ($k,$v) = each %{$params} ) { push @pice, $k.'='.$v; }
+  return join( '&', @pice );
 }
 
 sub ua {
-	my $self = shift;
-	die "Can't get UserAgent object" unless exists $self->{ua};
-	return $self->{ua};
+  my $self = shift;
+  die "Can't get UserAgent object" unless exists $self->{ua};
+  return $self->{ua};
 }
 
 sub access_token {
-	my $self = shift;
-	die "Can't get access token" unless exists $self->{access_token};
-	return $self->{access_token};
+  my $self = shift;
+  die "Can't get access token" unless exists $self->{access_token};
+  return $self->{access_token};
 }
 
 sub uid {
-	my $self = shift;
-	die "Can't get user id" unless exists $self->{uid};
-	return $self->{uid};
+  my $self = shift;
+  die "Can't get user id" unless exists $self->{uid};
+  return $self->{uid};
 }
 
 sub request {
-	my $self   = shift;
-	my $method = shift;
-	$method .= '.xml' if $self->{format} eq "XML";
-	my $params = shift || {};
-	my $url = 'https://api.vk.com/method/'.
-	          $method.'?'._params($params).
-	          '&access_token='.$self->{access_token};
+  my $self   = shift;
+  my $method = shift;
+  $method .= '.xml' if $self->{format} eq "XML";
+  my $params = shift || {};
+  my $url = 'https://api.vk.com/method/'.
+            $method.'?'._params($params).
+            '&access_token='.$self->{access_token};
   my $res = $self->{ua}->get($url);
   return 0 unless $res->is_success;
   my $content = $res->content;
