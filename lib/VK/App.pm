@@ -6,7 +6,7 @@ use LWP;
 use LWP::Protocol::https;
 use JSON;
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 sub new {
   my ($class, %args) = @_;
@@ -95,14 +95,6 @@ sub _valid_new_args {
   return 1;
 }
 
-sub _params {
-  my $params = shift;
-  return unless ( ref $params eq "HASH" );
-  my @pice;
-  while ( my ($k,$v) = each %{$params} ) { push @pice, $k.'='.$v; }
-  return join( '&', @pice );
-}
-
 sub ua {
   my $self = shift;
   die "Can't get UserAgent object" unless exists $self->{ua};
@@ -126,10 +118,8 @@ sub request {
   my $method = shift;
   $method .= '.xml' if $self->{format} eq "XML";
   my $params = shift || {};
-  my $url = 'https://api.vk.com/method/'.
-            $method.'?'._params($params).
-            '&access_token='.$self->{access_token};
-  my $res = $self->{ua}->get($url);
+  my $url = 'https://api.vk.com/method/'.$method;
+  my $res = $self->{ua}->post($url, { %$params, access_token => $self->{access_token} });
   return 0 unless $res->is_success;
   my $content = $res->content;
   return $content if ($self->{format} eq "XML");
@@ -218,7 +208,7 @@ Creates and returns an VK::App object. Takes a list containing key-value pairs.
 
 =item * api_id
 
-The api_id of application. You can register your application at L<http://vk.com/apps.php?act=add> or use B<api_id> of the existing application.
+The api_id of application. You can register your application at L<https://vk.com/editapp?act=create> or use B<api_id> of the existing application.
 
 =item * login
 
@@ -240,7 +230,7 @@ Name of the file to restore cookies from and save cookies to. B<Notice that inst
 
 =item * scope
 
-Set application access rights. List of available access rights L<http://vk.com/developers.php?oid=-17680044&p=Application_Access_Rights>. 'friends,photos,audio,video,wall,groups,messages,offline' by default.
+Set application access rights. List of available access rights L<http://vk.com/dev/permissions>. 'friends,photos,audio,video,wall,groups,messages,offline' by default.
 
 =item * format
 
@@ -256,7 +246,7 @@ Send requests and return response.
 
     my $response = $vk->request($METHOD_NAME,$PARAMETERS);
 
-API method description available at L<http://vk.com/developers.php?oid=-17680044&p=API_Method_Description>
+API method description available at L<http://vk.com/dev/methods>
 
 =head2 C<ua>
 
@@ -284,7 +274,7 @@ Misha Genaev, <mag at cpan.org> (L<http://genaev.com/>)
 
 =head1 COPYRIGHT
 
-Copyright 2012 by Misha Genaev
+Copyright 2012-2014 by Misha Genaev
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 

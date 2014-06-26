@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 
-# vmd.pl - download user's tracks from vk.com
-# (c) Genaev Misha 2012 | http://genaev.com/
+# vmd - download user's tracks from vk.com
+# (c) Genaev Misha 2012 | http://genaev.com/vmd
+# Please visit my home page for geting full version of the script
 
 use strict;
 use warnings;
